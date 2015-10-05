@@ -1,0 +1,45 @@
+<?php
+    session_start();
+    if(!$_SESSION['admin'])
+    {
+        header("Location:login.php");                       
+    }
+
+    require_once("head.php");
+    require_once("db_manage.php");
+
+   $regionname=$_GET['regionname'];
+   con_db();
+   $sql="select C_id,Firstname,Lastname,Tel,Email,Address,Zipcode from Client where City='" . $regionname . "'";
+   $rst=mysql_query($sql); 
+if( !(mysql_fetch_assoc($rst)))
+{
+echo "<center>";
+echo "<h2>view the Information of Our Clients in <?php echo ' {$regionname} ';?></h2>";
+echo "<table width='700px' border='1px'>";
+echo "<tr>";
+echo "<th>ID</th>";
+echo "<th>NAME</th>";
+echo "<th>TELEPHONE NUMBER </th>";
+echo "<th>EMAIL</th>";
+echo "<th>ADDRESS</th>";
+echo "<th>ZIP CODE</th>";
+echo "<th>REGISTRATION DATE</th>";
+echo "</tr>";
+
+while($row=mysql_fetch_assoc($rst)){
+echo "<tr>";
+echo "<td>{$row['c_id']}</td>";
+echo"<td>{$row['Firstname']}  {$row['Lastname']}</td>";
+echo"<td>{$row['Tel']}</td>";
+echo"<td>{$row['Email']}</td>";
+echo"<td>{$row['Address']}</td>";
+echo"<td>{$row['Zipcode']}</td>";
+echo"<th>{$row['date_added']}</td>";
+}
+echo"</table>";
+}else{echo "NO Information of Clients in this region";
+       header("region.php");
+       }
+
+       
